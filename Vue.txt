@@ -1,0 +1,366 @@
+=====
+初始化
+=====
+> npm init vue@latest
+> npm install //自動安裝所需第三方套件
+> npm run dev //測試專案能不能正常運作
+
+==========
+Vue專案結構
+==========
++ package.json 基礎專案描述檔 //紀錄專案名稱，版本，第三方套件
++ vite.config.js 專案建置工具設定檔 //紀錄流程
++ 專案中的子資料夾們: 
+ - .vscode 開發環境設定 //(不太需要更動)
+ - node_modules 第三方套件安裝位置 
+ - src 主要的程式原始碼資料夾 //是最重要，最常使用的地方
+ - public 靜態檔案資料夾 //主要放圖片
+ - dist 專案建置後存放的位置 
+
+===========
+專案基礎管理
+===========
+-------------------------
+1. 專案建置 For Production
+-------------------------
+> npm run build
+  /* 把原始碼打包，產生一個最終的檔案
+     打包原始碼程式 (src) 
+     打包專案需要的靜態檔案 (public) 
+     輸出建置後的檔案到特定資料夾 (dist) 
+     可以用任何伺服器測試最後的成果 */
+
+--------------------------
+2. 開發測試 For Development
+--------------------------
+> npm run dev 
+ /* 啟動內建的測試用伺服器
+    不輸出檔案(因為會花一些功夫)，直接在記憶體中建置專案
+    隨時反映原始碼的更新 */
+
+=======
+Vue App
+=======
+代表一個以Vue開發的網頁應用，其中包含一到多個組件
+- 建立最基礎的HTML檔案 index.html
+- 建立一個根組件 App.vue //組件最底層
+- 建立一個主程式檔案 main.js 
+
+在主程式main.js中建立Vue App: 
+ - 載入，設定根組件
+ - 設定掛載的HTML標籤
+
+
+----------------------------------------------------------------------------
+Vue 組件 (Single File Component) : 將網頁的HTML, CSS, JS 包裹在一個Vue程式檔案中
+----------------------------------------------------------------------------
+<script setup>
+    //JS程式碼
+</script>
+<template>
+    /* HTML 樣板結構 */
+</template>
+<style scoped>
+    /* CSS設定 */ 
+</style>
+
+
+=======
+樣板語法
+=======
+用途:可以根據程式中的資料產生最終的畫面
+
+內文:
+----------------------------------------
+1. 嵌入純文字: 標籤內使用{{嵌入的變數}}語法
+----------------------------------------
+<script setup>
+    let data="Hello" //JS程式碼
+</script>
+<template>
+    <div> {{data}} </div>
+</template>
+<style scoped>
+    /* CSS設定 */ 
+</style>
+
+--------------------------------------------
+2. 嵌入HTML語法:標籤屬性設定v-html="嵌入的變數"
+--------------------------------------------
+<script setup>
+    let htmlData="<u>Hello</u>"; //JS程式碼
+</script>
+<template>
+    <div v-html="htmlData"></div>
+</template>
+<style scoped>
+    /* CSS設定 */ 
+</style>
+
+屬性: 
+--------------------------------------------------
+1. 嵌入屬性值:標籤屬性設定v-bind:屬性名稱="嵌入的變數"
+--------------------------------------------------
+<script setup>
+    let name="content" //JS程式碼
+</script>
+<template>
+    <div v-bind:class="name">Hello</div>  //另一種寫法： <div :class="name">Hello</div>
+</template>
+<style scoped>
+    /* CSS設定 */ 
+</style>
+
+程式語句: 
+-------------------------
+1. 透過程式語句產生標籤內文
+-------------------------
+e.g. <div>{{data.toUpperCase()}}</div>
+
+------------------------
+2. 透過程式語句產生標籤屬性
+------------------------
+e.g. <div :class="data"?"dark":"light">Hello</div> 
+
+--------------------------------
+if 判斷式: 使用v-if="boolean"語法
+--------------------------------
+<script setup>
+    let data=true;
+    let number=3000;
+</script>
+<template>
+    <div v-if="data">顯示</div>
+    <div v-if="!data">不顯示</div>
+    <div v-if="number>2000">Greater than 2000</div>
+</template>
+<style scoped>
+    /* CSS設定 */ 
+</style>
+
+------------------------------------
+if..else 判斷式: 使用v-if, v-else語法
+------------------------------------
+<script setup>
+    let number=1000;
+</script>
+<template>
+    <div v-if="number>2000">Greater than 2000 </div>
+    <div v-else>Less than or equal to 2000 </div>
+</template>
+<style scoped>
+    /* CSS設定 */ 
+</style>
+
+---------------------------------------------------------------------
+if..else if..else 判斷式: 使用v-else-if="boolean", 搭配v-if, v-else語法
+---------------------------------------------------------------------
+<script setup>
+    let number=15;
+</script>
+<template>
+    <div v-if="number>20">Greater than 20 </div>
+    <div v-else-if="number>10">Greater than 10 </div>
+    <div v-else>Less than or equal to 10 </div>
+</template>
+<style scoped>
+    /* CSS設定 */ 
+</style>
+
+--------------------------------------
+for 迴圈-陣列 使用v-for="變數in陣列"語法
+--------------------------------------
+<script setup>
+    let data=[1,2,3];
+</script>
+<template>
+    <div v-for="n in data">Item {{ n }} </div>
+</template>
+<style scoped>
+    /* CSS設定 */ 
+</style>
+
+-------------------------------------------------
+for 迴圈-陣列索引 使用v-for="(變數,變數)in 陣列"語法
+-------------------------------------------------
+<script setup>
+    let data=["A","B","C"];
+</script>
+<template>
+    <div v-for="(text,index) in data"> {{index}} - {{ text }} </div>
+</template>
+<style scoped>
+    /* CSS設定 */ 
+</style>
+
+-------------------------------------------------
+for 迴圈-物件 使用v-for="(變數,變數)in 物件"語法
+-------------------------------------------------
+<script setup>
+    let data={"x":3,"y":4};
+</script>
+<template>
+    <div v-for="(value,key) in data"> 物件屬性　{{key}}　為　{{value}} </div>
+</template>
+<style scoped>
+    /* CSS設定 */ 
+</style>
+
+------------------------------------------
+基本事件處理 使用v-on:事件名稱="函式名稱"語法
+------------------------------------------
+<script setup>
+    let handler = function(){
+        console.log("click"); 
+    };
+</script>
+<template>
+    <span v-on:click="handler">文字</span>
+</template>
+<style scoped>
+    /* CSS設定 */ 
+</style>
+
+-------------------------------
+簡寫 使用 @事件名稱="函式名稱"語法
+-------------------------------
+<script setup>
+    let clickHandler = function(){
+        console.log("click"); 
+    };
+    let mouseoverHandler = function(){
+        console.log("Mouse Over"); 
+    };
+</script>
+<template>
+    <span @click="clickHandler"
+          @mouseover="mouseoverHandler"
+    >文字</span>
+</template>
+<style scoped>
+    /* CSS設定 */ 
+</style>
+
+--------------------------
+使用 once 表達事件只觸發一次 
+--------------------------
+v-on:事件名稱.once="函式名稱"
+@事件名稱.once="函式名稱"
+<template>
+    <span v-on:click.once="handler">文字</span>
+</template>
+
+---------------------------
+使用 prevent 表達停止預設行為 
+---------------------------
+v-on:事件名稱.prevent="函式名稱"
+@事件名稱.prevent="函式名稱"
+<template>
+    <a href="https://xxx.com" v-on:click.prevent="handler">我的網站</a>
+</template>
+
+-------------------------------
+1. 非響應式的狀態: 資料和畫面沒有連動
+2. 響應式的狀態: 資料和畫面連動
+   import {ref} from "vue"; 
+   let content = ref(資料); 
+   <div>{{content}}</div>
+   content.value=新的資料; 
+-------------------------------
+<script setup>
+    import {ref} from "vue"; 
+    let content = ref("網站的內容"); 
+    let handler = function(){
+        content.value = "新的網站內容";
+    };
+</script>
+<template>
+    <div>{{content}}</div>
+    <button @click="handler"> Click </button>
+</template>
+<style scoped>
+    /* CSS設定 */ 
+</style>
+
+===============================
+Vue 表單輸入元件、響應式狀態的綁定
+===============================
+--------------------------------------
+響應式狀態 使用v-model="響應式狀態的名稱"
+          輸入的資料和響應式狀態連動
+--------------------------------------
+<script setup>
+    import {ref} from "vue"; 
+    let text = ref("預設的文字"); 
+</script>
+<template>
+    <input type="text" v-model="text"/>
+    <div> content: {{text}}</div>
+</template>
+<style scoped>
+    /* CSS設定 */ 
+</style>
+----------------------------------
+單選框:多個選擇框綁定同一個響應式狀態
+資料和標籤的value屬性對應
+----------------------------------
+<script setup>
+    import {ref} from "vue"; 
+    let gender = ref(null); 
+</script>
+<template>
+    <input type="radio" value ="male" v-model="gender"/>
+    <input type="radio" value ="female" v-model="gender"/>
+    <div>選擇型別: {{gender}}</div>
+</template>
+<style scoped>
+    /* CSS設定 */ 
+</style>
+----------------------------------
+多選框:綁定的響應式狀態使用陣列資料
+資料和標籤的value屬性對應
+----------------------------------
+<script setup>
+    import {ref} from "vue"; 
+    let fruits = ref([]); 
+</script>
+<template>
+    <input type="checkbox" value ="apple" v-model="fruits"/>
+    <input type="checkbox" value ="banana" v-model="fruits"/>
+    <div>選擇水果: {{fruits}}</div>
+</template>
+<style scoped>
+    /* CSS設定 */ 
+</style>
+------------------------------
+下拉式選單:綁定select標籤
+資料和option標籤的value屬性對應
+------------------------------
+<script setup>
+    import {ref} from "vue"; 
+    let gender = ref(""); 
+</script>
+<template>
+    <select v-model="gender">
+        <option value="">請選擇</option>
+        <option value="male">Male</option>
+        <option value="female">Female</option>
+    </select>
+    <div>選擇性別: {{gender}}</div>
+</template>
+<style scoped>
+    /* CSS設定 */ 
+</style>
+
+--------------------------------------------
+組件的切割:將網頁根據實際的畫面區塊切割成多個組件
+--------------------------------------------
+1. 載入組件:在程式中載入其他的組件
+   import 組件名稱 from "組件檔案路徑"; 
+2. 使用載入的組件: 組件就像自訂義的HTML標籤
+   <組件名稱></組件名稱>
+
+
+
+
+
