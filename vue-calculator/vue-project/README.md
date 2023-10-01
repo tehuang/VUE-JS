@@ -2,7 +2,7 @@
 
 This is a simple calculator web application built using Vue.js. You can perform basic arithmetic calculations using this calculator, such as addition, subtraction, multiplication, and division.
 
-<img src="/Final_Result/calculator.png" width="50%"/>
+<img src="./Final_Result/calculator.png" width="50%"/>
 
 ## Features
 
